@@ -1,24 +1,17 @@
-# ToyRobotElixir
+# Toy Robot Elixir
 
-**TODO: Add description**
+The infamous Toy Robot code test done in Elixir. Please see [PROBLEM.md](PROBLEM.md) for more information.
 
-## Installation
+## Prerequisite
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+- Erlang (tested on 18.3)
+- Elixir (tested on 1.3)
 
-  1. Add `toy_robot_elixir` to your list of dependencies in `mix.exs`:
+## Tests
 
-    ```elixir
-    def deps do
-      [{:toy_robot_elixir, "~> 0.1.0"}]
-    end
-    ```
+    mix test
 
-  2. Ensure `toy_robot_elixir` is started before your application:
+## Author
 
-    ```elixir
-    def application do
-      [applications: [:toy_robot_elixir]]
-    end
-    ```
-
+- Fred Wu <ifredwu@gmail.com>
+- 2016-06-25
