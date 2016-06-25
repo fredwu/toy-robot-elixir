@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.DefaultTask do
+defmodule Mix.Tasks.T do
   use Mix.Task
 
   @shortdoc "Default project tasks"

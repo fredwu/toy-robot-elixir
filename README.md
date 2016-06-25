@@ -21,7 +21,7 @@ The infamous Toy Robot code test done in Elixir. Please see [PROBLEM.md](PROBLEM
 
 ## Run Tests and Coding Style Checks
 
-    mix
+    mix t
 
 ## Author
 

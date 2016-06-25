@@ -7,8 +7,7 @@ defmodule ToyRobotElixir.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     default_task: "default_task",
-     preferred_cli_env: [default_task: :test],
+     preferred_cli_env: [t: :test],
      deps: deps()]
   end
 
