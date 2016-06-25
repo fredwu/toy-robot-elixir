@@ -23,8 +23,8 @@ defmodule ToyRobotElixir.Robot do
   def move(:west),  do: placed? && update_placement(x: placement.y - 1)
   def move(_),      do: placed?
 
-  def left,  do: placed? && update_placement(direction: turn_direction(placement.direction, :left))
-  def right, do: placed? && update_placement(direction: turn_direction(placement.direction, :right))
+  def left,  do: placed? && update_placement(direction: turn(placement.direction, :left))
+  def right, do: placed? && update_placement(direction: turn(placement.direction, :right))
 
   def report, do: placement
 
@@ -45,14 +45,11 @@ defmodule ToyRobotElixir.Robot do
   defp placement_error(nil, _),     do: update_placement(error: "Please place the robot first.")
   defp placement_error(key, value), do: update_placement(error: "Placement #{key}: #{value} is invalid.")
 
-  defp turn_direction(direction, turn) do
-    directions(direction, turn) |> new_direction(direction)
-  end
-
-  defp new_direction(directions, direction) do
-    index = Enum.find_index(directions, &(&1 == direction))
-
-    Enum.at(directions, index + 1)
+  defp turn(direction, left_or_right) do
+    directions(direction, left_or_right)
+      |> Enum.drop_while(&(&1 != direction))
+      |> tl
+      |> hd
   end
 
   defp directions(:north, :left), do: @grid.directions |> Utils.rotate |> Enum.reverse
