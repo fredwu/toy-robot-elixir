@@ -164,6 +164,27 @@ defmodule ToyRobotElixirTest do
       assert Robot.report == %Robot.Placement{x: 0, y: 0, direction: :west, error: "Placement x: -1 is invalid."}
     end
 
+    test "#move with invalid direction" do
+      Robot.place(0, 0, :cat)
+      Robot.move
+
+      assert Robot.report == %Robot.Placement{error: "Placement direction: cat is invalid."}
+    end
+
+    test "#left with invalid direction" do
+      Robot.place(0, 0, :cat)
+      Robot.left
+
+      assert Robot.report == %Robot.Placement{error: "Placement direction: cat is invalid."}
+    end
+
+    test "#right with invalid direction" do
+      Robot.place(0, 0, :cat)
+      Robot.right
+
+      assert Robot.report == %Robot.Placement{error: "Placement direction: cat is invalid."}
+    end
+
     test "#place recovers from invalid x" do
       Robot.place(10, 0, :north)
       Robot.place(0, 0, :north)

@@ -17,21 +17,17 @@ defmodule ToyRobotElixir.Robot do
   def place(x, y, direction),                                    do: initial_placement(x: x, y: y, direction: direction)
 
   def move(direction \\ placement.direction)
-  def move(:north), do: placed? && update_placement(y: placement.y + 1)
-  def move(:east),  do: placed? && update_placement(x: placement.y + 1)
-  def move(:south), do: placed? && update_placement(y: placement.y - 1)
-  def move(:west),  do: placed? && update_placement(x: placement.y - 1)
-  def move(_),      do: placed?
+  def move(:north), do: update_placement(y: placement.y + 1)
+  def move(:east),  do: update_placement(x: placement.y + 1)
+  def move(:south), do: update_placement(y: placement.y - 1)
+  def move(:west),  do: update_placement(x: placement.y - 1)
+  def move(_),      do: nil
 
-  def left,  do: placed? && update_placement(direction: turn(placement.direction, :left))
-  def right, do: placed? && update_placement(direction: turn(placement.direction, :right))
+  def left,  do: !placement.error && update_placement(direction: turn(placement.direction, :left))
+  def right, do: !placement.error && update_placement(direction: turn(placement.direction, :right))
 
   def report, do: placement
 
-
-  defp placed?(error \\ placement.error)
-  defp placed?(nil), do: true
-  defp placed?(_),   do: false
 
   defp placement, do: Agent.get(:placement, &(&1))
 
