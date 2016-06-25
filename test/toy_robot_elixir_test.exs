@@ -4,18 +4,20 @@ defmodule ToyRobotElixirTest do
 
   alias ToyRobotElixir.{ Robot, Utils }
 
+  setup do
+    Robot.init
+
+    :ok
+  end
+
   describe "Utils" do
     test "#rotate" do
       assert Utils.rotate([1, 2, 3, 4, 5]) == [2, 3, 4, 5, 1]
     end
   end
 
-  describe "Robot" do
-    test "#place" do
-      assert Robot.place(0, 0, :north) == %Robot.Placement{ x: 0, y: 0, direction: :north }
-    end
-
-    test "#report" do
+  describe "Robot golden path" do
+    test "#place and #report" do
       Robot.place(1, 1, :north)
 
       assert Robot.report == %Robot.Placement{ x: 1, y: 1, direction: :north }
@@ -71,6 +73,101 @@ defmodule ToyRobotElixirTest do
       Robot.move
 
       assert Robot.report == %Robot.Placement{ x: 3, y: 3, direction: :north }
+    end
+  end
+
+  describe "Robot error paths" do
+    test "#place not called before #move" do
+      Robot.move
+
+      assert Robot.report == %Robot.Placement{ error: "Please place the robot first." }
+    end
+
+    test "#place not called before #left" do
+      Robot.left
+
+      assert Robot.report == %Robot.Placement{ error: "Please place the robot first." }
+    end
+
+    test "#place not called before #right" do
+      Robot.right
+
+      assert Robot.report == %Robot.Placement{ error: "Please place the robot first." }
+    end
+
+    test "#place with positive out of bound x" do
+      Robot.place(10, 0, :north)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement x: 10 is invalid." }
+    end
+
+    test "#place with negative out of bound x" do
+      Robot.place(-1, 0, :north)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement x: -1 is invalid." }
+    end
+
+    test "#place with positive out of bound y" do
+      Robot.place(0, 10, :north)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement y: 10 is invalid." }
+    end
+
+    test "#place with negative out of bound y" do
+      Robot.place(0, -1, :north)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement y: -1 is invalid." }
+    end
+
+    test "#place with positive out of bound x and y" do
+      Robot.place(10, 10, :north)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement x: 10 is invalid." }
+    end
+
+    test "#place with negative out of bound x and y" do
+      Robot.place(-1, -1, :north)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement x: -1 is invalid." }
+    end
+
+    test "#place with invalid x" do
+      Robot.place(:cat, 0, :north)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement x: cat is invalid." }
+    end
+
+    test "#place with invalid y" do
+      Robot.place(0, :cat, :north)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement y: cat is invalid." }
+    end
+
+    test "#place with invalid direction" do
+      Robot.place(0, 0, :cat)
+
+      assert Robot.report == %Robot.Placement{ error: "Placement direction: cat is invalid." }
+    end
+
+    test "#place recovers from invalid x" do
+      Robot.place(10, 0, :north)
+      Robot.place(0, 0, :north)
+
+      assert Robot.report == %Robot.Placement{ x: 0, y: 0, direction: :north }
+    end
+
+    test "#place recovers from invalid y" do
+      Robot.place(0, 10, :north)
+      Robot.place(0, 0, :north)
+
+      assert Robot.report == %Robot.Placement{ x: 0, y: 0, direction: :north }
+    end
+
+    test "#place recovers from invalid direction" do
+      Robot.place(0, 0, :cat)
+      Robot.place(0, 0, :north)
+
+      assert Robot.report == %Robot.Placement{ x: 0, y: 0, direction: :north }
     end
   end
 end
