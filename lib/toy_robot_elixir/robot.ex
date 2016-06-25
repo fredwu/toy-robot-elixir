@@ -14,7 +14,7 @@ defmodule ToyRobotElixir.Robot do
   def place(x, _, _)         when invalid_x?(x),                 do: placement_error(:x, x)
   def place(_, y, _)         when invalid_y?(y),                 do: placement_error(:y, y)
   def place(_, _, direction) when invalid_direction?(direction), do: placement_error(:direction, direction)
-  def place(x, y, direction),                                    do: update_placement(x: x, y: y, direction: direction)
+  def place(x, y, direction),                                    do: initial_placement(x: x, y: y, direction: direction)
 
   def move(direction \\ placement.direction)
   def move(:north), do: placed? && update_placement(y: placement.y + 1)
@@ -35,11 +35,16 @@ defmodule ToyRobotElixir.Robot do
 
   defp placement, do: Agent.get(:placement, &(&1))
 
-  defp update_placement(attrs) do
+  defp initial_placement(attrs) do
     for {key, value} <- attrs do
       Agent.update(:placement, &(%{&1 | :error => nil, key => value}))
     end
   end
+
+  defp update_placement(x: x),                 do: place(x, placement.y, placement.direction)
+  defp update_placement(y: y),                 do: place(placement.x, y, placement.direction)
+  defp update_placement(direction: direction), do: place(placement.x, placement.y, direction)
+  defp update_placement(error: error),         do: initial_placement(error: error)
 
   defp placement_error(key \\ nil, value \\ nil)
   defp placement_error(nil, _),     do: update_placement(error: "Please place the robot first.")
