@@ -1,7 +1,7 @@
 defmodule ToyRobotElixir.Robot do
   alias ToyRobotElixir.{ Grid, Robot.Placement, Utils }
 
-  import Placement
+  import ToyRobotElixir.Robot.PlacementValidator
 
   @grid %Grid{}
 
