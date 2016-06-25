@@ -1,5 +1,5 @@
 defmodule ToyRobotElixir.Robot do
-  alias ToyRobotElixir.{ Grid, Robot.Placement, Utils }
+  alias ToyRobotElixir.{Grid, Robot.Placement, Utils}
 
   import ToyRobotElixir.Robot.PlacementValidator
 
@@ -36,8 +36,8 @@ defmodule ToyRobotElixir.Robot do
   defp placement, do: Agent.get(:placement, &(&1))
 
   defp update_placement(attrs) do
-    for { key, value } <- attrs do
-      Agent.update(:placement, &(%{ &1 | :error => nil, key => value }))
+    for {key, value} <- attrs do
+      Agent.update(:placement, &(%{&1 | :error => nil, key => value}))
     end
   end
 

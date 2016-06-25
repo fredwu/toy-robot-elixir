@@ -2,7 +2,7 @@ defmodule ToyRobotElixirTest do
   use ExUnit.Case
   doctest ToyRobotElixir
 
-  alias ToyRobotElixir.{ Robot, Utils }
+  alias ToyRobotElixir.{Robot, Utils}
 
   setup do
     Robot.init
@@ -20,49 +20,49 @@ defmodule ToyRobotElixirTest do
     test "#place and #report" do
       Robot.place(1, 1, :north)
 
-      assert Robot.report == %Robot.Placement{ x: 1, y: 1, direction: :north }
+      assert Robot.report == %Robot.Placement{x: 1, y: 1, direction: :north}
     end
 
     test "#move north" do
       Robot.place(0, 0, :north)
       Robot.move
 
-      assert Robot.report == %Robot.Placement{ x: 0, y: 1, direction: :north }
+      assert Robot.report == %Robot.Placement{x: 0, y: 1, direction: :north}
     end
 
     test "#move east" do
       Robot.place(0, 0, :east)
       Robot.move
 
-      assert Robot.report == %Robot.Placement{ x: 1, y: 0, direction: :east }
+      assert Robot.report == %Robot.Placement{x: 1, y: 0, direction: :east}
     end
 
     test "#move south" do
       Robot.place(1, 1, :south)
       Robot.move
 
-      assert Robot.report == %Robot.Placement{ x: 1, y: 0, direction: :south }
+      assert Robot.report == %Robot.Placement{x: 1, y: 0, direction: :south}
     end
 
     test "#move west" do
       Robot.place(1, 1, :west)
       Robot.move
 
-      assert Robot.report == %Robot.Placement{ x: 0, y: 1, direction: :west }
+      assert Robot.report == %Robot.Placement{x: 0, y: 1, direction: :west}
     end
 
     test "#left" do
       Robot.place(0, 0, :north)
       Robot.left
 
-      assert Robot.report == %Robot.Placement{ x: 0, y: 0, direction: :west }
+      assert Robot.report == %Robot.Placement{x: 0, y: 0, direction: :west}
     end
 
     test "#right" do
       Robot.place(0, 0, :north)
       Robot.right
 
-      assert Robot.report == %Robot.Placement{ x: 0, y: 0, direction: :east }
+      assert Robot.report == %Robot.Placement{x: 0, y: 0, direction: :east}
     end
 
     test "example c)" do
@@ -72,7 +72,7 @@ defmodule ToyRobotElixirTest do
       Robot.left
       Robot.move
 
-      assert Robot.report == %Robot.Placement{ x: 3, y: 3, direction: :north }
+      assert Robot.report == %Robot.Placement{x: 3, y: 3, direction: :north}
     end
   end
 
@@ -80,94 +80,94 @@ defmodule ToyRobotElixirTest do
     test "#place not called before #move" do
       Robot.move
 
-      assert Robot.report == %Robot.Placement{ error: "Please place the robot first." }
+      assert Robot.report == %Robot.Placement{error: "Please place the robot first."}
     end
 
     test "#place not called before #left" do
       Robot.left
 
-      assert Robot.report == %Robot.Placement{ error: "Please place the robot first." }
+      assert Robot.report == %Robot.Placement{error: "Please place the robot first."}
     end
 
     test "#place not called before #right" do
       Robot.right
 
-      assert Robot.report == %Robot.Placement{ error: "Please place the robot first." }
+      assert Robot.report == %Robot.Placement{error: "Please place the robot first."}
     end
 
     test "#place with positive out of bound x" do
       Robot.place(10, 0, :north)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement x: 10 is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement x: 10 is invalid."}
     end
 
     test "#place with negative out of bound x" do
       Robot.place(-1, 0, :north)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement x: -1 is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement x: -1 is invalid."}
     end
 
     test "#place with positive out of bound y" do
       Robot.place(0, 10, :north)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement y: 10 is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement y: 10 is invalid."}
     end
 
     test "#place with negative out of bound y" do
       Robot.place(0, -1, :north)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement y: -1 is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement y: -1 is invalid."}
     end
 
     test "#place with positive out of bound x and y" do
       Robot.place(10, 10, :north)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement x: 10 is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement x: 10 is invalid."}
     end
 
     test "#place with negative out of bound x and y" do
       Robot.place(-1, -1, :north)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement x: -1 is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement x: -1 is invalid."}
     end
 
     test "#place with invalid x" do
       Robot.place(:cat, 0, :north)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement x: cat is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement x: cat is invalid."}
     end
 
     test "#place with invalid y" do
       Robot.place(0, :cat, :north)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement y: cat is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement y: cat is invalid."}
     end
 
     test "#place with invalid direction" do
       Robot.place(0, 0, :cat)
 
-      assert Robot.report == %Robot.Placement{ error: "Placement direction: cat is invalid." }
+      assert Robot.report == %Robot.Placement{error: "Placement direction: cat is invalid."}
     end
 
     test "#place recovers from invalid x" do
       Robot.place(10, 0, :north)
       Robot.place(0, 0, :north)
 
-      assert Robot.report == %Robot.Placement{ x: 0, y: 0, direction: :north }
+      assert Robot.report == %Robot.Placement{x: 0, y: 0, direction: :north}
     end
 
     test "#place recovers from invalid y" do
       Robot.place(0, 10, :north)
       Robot.place(0, 0, :north)
 
-      assert Robot.report == %Robot.Placement{ x: 0, y: 0, direction: :north }
+      assert Robot.report == %Robot.Placement{x: 0, y: 0, direction: :north}
     end
 
     test "#place recovers from invalid direction" do
       Robot.place(0, 0, :cat)
       Robot.place(0, 0, :north)
 
-      assert Robot.report == %Robot.Placement{ x: 0, y: 0, direction: :north }
+      assert Robot.report == %Robot.Placement{x: 0, y: 0, direction: :north}
     end
   end
 end

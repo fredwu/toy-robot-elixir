@@ -7,6 +7,8 @@ defmodule ToyRobotElixir.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     default_task: "default_task",
+     preferred_cli_env: [default_task: :test],
      deps: deps()]
   end
 
@@ -27,6 +29,8 @@ defmodule ToyRobotElixir.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      { :credo, "~> 0.4" }
+    ]
   end
 end
