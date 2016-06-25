@@ -1,0 +1,2 @@
+import ToyRobotElixir.Robot
+init
