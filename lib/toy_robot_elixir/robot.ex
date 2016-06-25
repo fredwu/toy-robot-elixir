@@ -31,6 +31,10 @@ defmodule ToyRobotElixir.Robot do
 
   defp placement, do: Agent.get(:placement, &(&1))
 
+  defp placement_error(key \\ nil, value \\ nil)
+  defp placement_error(nil, _),     do: update_placement(error: "Please place the robot first.")
+  defp placement_error(key, value), do: update_placement(error: "Placement #{key}: #{value} is invalid.")
+
   defp update_placement(x: x),                 do: place(x, placement.y, placement.direction)
   defp update_placement(y: y),                 do: place(placement.x, y, placement.direction)
   defp update_placement(direction: direction), do: place(placement.x, placement.y, direction)
@@ -39,10 +43,6 @@ defmodule ToyRobotElixir.Robot do
       Agent.update(:placement, &(%{&1 | :error => nil, key => value}))
     end
   end
-
-  defp placement_error(key \\ nil, value \\ nil)
-  defp placement_error(nil, _),     do: update_placement(error: "Please place the robot first.")
-  defp placement_error(key, value), do: update_placement(error: "Placement #{key}: #{value} is invalid.")
 
   defp turn(direction, left_or_right) do
     directions(direction, left_or_right)
