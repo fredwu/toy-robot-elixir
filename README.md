@@ -2,6 +2,8 @@
 
 The infamous Toy Robot code test done in Elixir. Please see [PROBLEM.md](PROBLEM.md) for more information.
 
+The purpose of this is for me to learn and practice Elixir after reading [Programming Elixir](https://pragprog.com/downloads/1724546).
+
 ## Prerequisite
 
 - Erlang (tested on 18.3)
