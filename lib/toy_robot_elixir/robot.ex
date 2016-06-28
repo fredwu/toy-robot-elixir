@@ -16,24 +16,25 @@ defmodule ToyRobotElixir.Robot do
   def place(_, _, direction) when invalid_direction?(direction), do: placement_error(:direction, direction)
   def place(x, y, direction),                                    do: update_placement(x: x, y: y, direction: direction)
 
-  def move(direction \\ placement.direction)
-  def move(:north), do: update_placement(y: placement.y + 1)
-  def move(:east),  do: update_placement(x: placement.x + 1)
-  def move(:south), do: update_placement(y: placement.y - 1)
-  def move(:west),  do: update_placement(x: placement.x - 1)
-  def move(_),      do: nil
+  def move do
+    case placement.direction do
+      :north -> update_placement(y: placement.y + 1)
+      :east  -> update_placement(x: placement.x + 1)
+      :south -> update_placement(y: placement.y - 1)
+      :west  -> update_placement(x: placement.x - 1)
+      _      -> nil
+    end
+  end
 
-  def left(direction \\ placement.direction)
-  def left(direction) when direction in @directions, do: update_placement(direction: turn(placement.direction, :left))
-  def left(_),                                       do: nil
+  def left,  do: update_direction(:left)
+  def right, do: update_direction(:right)
 
-  def right(direction \\ placement.direction)
-  def right(direction) when direction in @directions, do: update_placement(direction: turn(placement.direction, :right))
-  def right(_),                                       do: nil
-
-  def report(_ \\ placement)
-  def report(%Placement{error: nil}), do: %{x: placement.x, y: placement.y, direction: placement.direction}
-  def report(_),                      do: placement.error
+  def report do
+    case placement do
+      %Placement{error: nil} -> %{x: placement.x, y: placement.y, direction: placement.direction}
+      _                      -> placement.error
+    end
+  end
 
 
   defp placement, do: Agent.get(:placement, &(&1))
@@ -48,6 +49,12 @@ defmodule ToyRobotElixir.Robot do
   defp update_placement(attrs) do
     for {key, value} <- attrs do
       Agent.update(:placement, &(%{&1 | :error => nil, key => value}))
+    end
+  end
+
+  defp update_direction(left_or_right) do
+    if placement.direction in @directions do
+      update_placement(direction: turn(placement.direction, left_or_right))
     end
   end
 
