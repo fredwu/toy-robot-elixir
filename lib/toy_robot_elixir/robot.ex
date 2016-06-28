@@ -3,7 +3,7 @@ defmodule ToyRobotElixir.Robot do
 
   import ToyRobotElixir.Robot.PlacementValidator
 
-  @grid %Grid{}
+  @directions %Grid{}.directions
 
   def init do
     Agent.start_link(fn -> %Placement{} end, name: :placement)
@@ -18,16 +18,27 @@ defmodule ToyRobotElixir.Robot do
 
   def move(direction \\ placement.direction)
   def move(:north), do: update_placement(y: placement.y + 1)
-  def move(:east),  do: update_placement(x: placement.y + 1)
+  def move(:east),  do: update_placement(x: placement.x + 1)
   def move(:south), do: update_placement(y: placement.y - 1)
-  def move(:west),  do: update_placement(x: placement.y - 1)
+  def move(:west),  do: update_placement(x: placement.x - 1)
   def move(_),      do: nil
 
-  def left,  do: !placement.error && update_placement(direction: turn(placement.direction, :left))
-  def right, do: !placement.error && update_placement(direction: turn(placement.direction, :right))
+  def left(direction \\ placement.direction)
+  def left(direction) when direction in @directions, do: update_placement(direction: turn(placement.direction, :left))
+  def left(_),                                       do: nil
 
-  def report, do: placement
+  def right(direction \\ placement.direction)
+  def right(direction) when direction in @directions, do: update_placement(direction: turn(placement.direction, :right))
+  def right(_),                                       do: nil
 
+  def report(_ \\ placement)
+  def report(%Placement{error: nil}), do: %{x: placement.x, y: placement.y, direction: placement.direction}
+  def report(_),                      do: placement.error
+
+
+  defp placed?(error \\ placement.error)
+  defp placed?(nil), do: true
+  defp placed?(_),   do: false
 
   defp placement, do: Agent.get(:placement, &(&1))
 
@@ -51,8 +62,8 @@ defmodule ToyRobotElixir.Robot do
       |> hd
   end
 
-  defp directions(:north, :left), do: @grid.directions |> Utils.rotate |> Enum.reverse
-  defp directions(_,      :left), do: @grid.directions |> Enum.reverse
-  defp directions(:east, :right), do: @grid.directions |> Utils.rotate
-  defp directions(_,     :right), do: @grid.directions
+  defp directions(:north, :left), do: @directions |> Utils.rotate |> Enum.reverse
+  defp directions(_,      :left), do: @directions |> Enum.reverse
+  defp directions(:east, :right), do: @directions |> Utils.rotate
+  defp directions(_,     :right), do: @directions
 end
