@@ -36,10 +36,6 @@ defmodule ToyRobotElixir.Robot do
   def report(_),                      do: placement.error
 
 
-  defp placed?(error \\ placement.error)
-  defp placed?(nil), do: true
-  defp placed?(_),   do: false
-
   defp placement, do: Agent.get(:placement, &(&1))
 
   defp placement_error(key \\ nil, value \\ nil)
