@@ -30,10 +30,7 @@ defmodule ToyRobotElixir.Robot do
   def right, do: update_direction(:right)
 
   def report do
-    case placement do
-      %Placement{error: nil} -> %{x: placement.x, y: placement.y, direction: placement.direction}
-      _                      -> placement.error
-    end
+    placement.error || %{x: placement.x, y: placement.y, direction: placement.direction}
   end
 
 
